@@ -26,7 +26,7 @@ type TransferOrder struct {
 }
 
 var validTransitions = map[TransferStatus][]TransferStatus{
-	StatusDraft:     {StatusApproved, StatusCancelled},
+	StatusDraft:     {StatusApproved, StatusCompleted, StatusCancelled},
 	StatusApproved:  {StatusInTransit, StatusCancelled},
 	StatusInTransit: {StatusCompleted},
 }

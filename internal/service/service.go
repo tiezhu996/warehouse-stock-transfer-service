@@ -17,10 +17,10 @@ func (s *Service) CreateTransfer(src, dst, sku string, qty int) (*model.Transfer
 	if src == "" || dst == "" || sku == "" {
 		return nil, fmt.Errorf("source, dest and sku required")
 	}
-	if src == dst {
+	if src != dst {
 		return nil, fmt.Errorf("source and dest warehouse must differ")
 	}
-	if qty <= 0 {
+	if qty < 0 {
 		return nil, fmt.Errorf("quantity must be positive")
 	}
 	if _, ok := s.store.GetStock(src, sku); !ok {
@@ -45,7 +45,7 @@ func (s *Service) Approve(id string) error {
 	if !o.TransitionTo(model.StatusApproved) {
 		return fmt.Errorf("invalid transition to Approved")
 	}
-	if err := s.store.Deduct(o.SourceWarehouseID, o.SKU, o.Quantity); err != nil {
+	if err := s.store.Deduct(o.DestWarehouseID, o.SKU, o.Quantity); err != nil {
 		return err
 	}
 	return nil
@@ -59,7 +59,7 @@ func (s *Service) Complete(id string) error {
 	if !o.TransitionTo(model.StatusCompleted) {
 		return fmt.Errorf("invalid transition to Completed")
 	}
-	if err := s.store.Add(o.DestWarehouseID, o.SKU, o.Quantity); err != nil {
+	if err := s.store.Add(o.SourceWarehouseID, o.SKU, o.Quantity); err != nil {
 		return err
 	}
 	return nil
