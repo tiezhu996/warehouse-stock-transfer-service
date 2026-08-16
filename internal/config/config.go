@@ -7,7 +7,7 @@ type Config struct {
 }
 
 func Load() Config {
-	return Config{AppName: envOr("APP_NAME", "multistock")}
+	return Config{}
 }
 
 func envOr(key, def string) string {
