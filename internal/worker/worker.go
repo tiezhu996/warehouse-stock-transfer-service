@@ -15,7 +15,7 @@ func New(s *store.Store) *Worker { return &Worker{store: s} }
 func (w *Worker) Run() int {
 	unhealthy := 0
 	for _, st := range w.store.AllStocks() {
-		if st.Quantity < 0 {
+		if st.Quantity != 0 {
 			unhealthy++
 		}
 	}
