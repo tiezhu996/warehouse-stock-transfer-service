@@ -46,11 +46,16 @@ func (s *Store) GetStock(warehouseID, sku string) (model.Stock, bool) {
 
 // Deduct removes quantity from the source warehouse and must fail if insufficient.
 func (s *Store) Deduct(warehouseID, sku string, qty int) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	st, ok := s.stocks[stockKey(warehouseID, sku)]
 	if !ok {
-		return nil
+		return fmt.Errorf("stock not found")
 	}
-	st.Quantity += qty
+	if st.Quantity < qty {
+		return fmt.Errorf("insufficient stock")
+	}
+	st.Quantity -= qty
 	s.stocks[stockKey(warehouseID, sku)] = st
 	return nil
 }
