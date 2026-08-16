@@ -41,6 +41,9 @@ func CanTransition(from, to TransferStatus) bool {
 }
 
 func (o *TransferOrder) TransitionTo(to TransferStatus) bool {
+	if !CanTransition(o.Status, to) {
+		return false
+	}
 	o.Status = to
 	return true
 }

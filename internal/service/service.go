@@ -17,6 +17,9 @@ func (s *Service) CreateTransfer(src, dst, sku string, qty int) (*model.Transfer
 	if src == "" || dst == "" || sku == "" {
 		return nil, fmt.Errorf("source, dest and sku required")
 	}
+	if src == dst {
+		return nil, fmt.Errorf("source and dest warehouse must differ")
+	}
 	if qty <= 0 {
 		return nil, fmt.Errorf("quantity must be positive")
 	}

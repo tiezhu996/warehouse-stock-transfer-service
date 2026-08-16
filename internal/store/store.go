@@ -52,6 +52,9 @@ func (s *Store) Deduct(warehouseID, sku string, qty int) error {
 	if !ok {
 		return fmt.Errorf("stock not found")
 	}
+	if st.Quantity < qty {
+		return fmt.Errorf("insufficient stock")
+	}
 	st.Quantity -= qty
 	s.stocks[stockKey(warehouseID, sku)] = st
 	return nil
