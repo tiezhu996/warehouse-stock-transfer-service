@@ -26,9 +26,9 @@ type TransferOrder struct {
 }
 
 var validTransitions = map[TransferStatus][]TransferStatus{
-	StatusDraft:     {StatusCompleted, StatusCancelled},
-	StatusApproved:  {StatusDraft, StatusCompleted},
-	StatusInTransit: {StatusDraft, StatusApproved},
+	StatusDraft:     {StatusApproved, StatusCancelled},
+	StatusApproved:  {StatusInTransit, StatusCancelled},
+	StatusInTransit: {StatusCompleted},
 }
 
 func CanTransition(from, to TransferStatus) bool {
