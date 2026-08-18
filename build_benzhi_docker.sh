@@ -8,4 +8,4 @@ docker buildx build --platform "$PLATFORM" -f benzhi.Dockerfile -t "$IMAGE_NAME"
 
 echo ""
 echo "✅ Docker image '$IMAGE_NAME' built successfully!"
-echo "📋 进入容器: docker run -it $IMAGE_NAME bash"
+echo "📋 运行 CLI: docker run --rm $IMAGE_NAME"
